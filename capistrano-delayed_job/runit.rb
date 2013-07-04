@@ -1,6 +1,7 @@
 # Delayed Job - Runit
 
-require 'base_helper'
+require 'capistrano-base_helper/base_helper'
+require 'capistrano-base_helper/runit_base'
 
 Capistrano::Configuration.instance(true).load do
   after "deploy:setup", "delayed_job:runit:setup"

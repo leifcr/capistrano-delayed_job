@@ -1,7 +1,8 @@
 # Delayed Job - Monit
 # Setup and management of Monit for Delayed Job
 #
-require 'base_helper'
+require 'capistrano-base_helper/base_helper'
+require 'capistrano-base_helper/monit_base'
 
 Capistrano::Configuration.instance(true).load do
   after "monit:setup", "delayed_job:monit:setup"
