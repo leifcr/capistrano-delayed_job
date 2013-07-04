@@ -1,0 +1,16 @@
+# Monit configuration for Delayed Job
+# <% c = Capistrano::BaseHelper::get_capistrano_instance %>
+# <%= "#{c.fetch(:application)} running as #{c.fetch(:user)} in environment #{Capistrano::BaseHelper.environment}" %>
+#
+# Service name: <%= c.fetch(:delayed_job_monit_service_name) %>
+#
+check process <%= c.fetch(:delayed_job_monit_service_name) %>
+    with pidfile <%= c.fetch(:delayed_job_pid_file) %>
+    start program = "<%= c.fetch(:delayed_job_monit_start_command) %>"
+    stop program = "<%= c.fetch(:delayed_job_monit_stop_command) %>"
+    <%= "if mem is greater than #{c.fetch(:delayed_job_monit_memory_alert_threshold)} then alert"     unless c.fetch(:delayed_job_monit_memory_alert_threshold).nil? %>
+    <%= "if mem is greater than #{c.fetch(:delayed_job_monit_memory_restart_threshold)} then restart" unless c.fetch(:delayed_job_monit_memory_restart_threshold).nil? %>
+    <%= "if cpu is greater than #{c.fetch(:delayed_job_monit_cpu_alert_threshold)} then alert"        unless c.fetch(:delayed_job_monit_cpu_alert_threshold).nil? %>
+    <%= "if cpu is greater than #{c.fetch(:delayed_job_monit_cpu_restart_threshold)} then restart"    unless c.fetch(:delayed_job_monit_cpu_restart_threshold).nil? %>
+
+    group <%= c.fetch(:monit_application_group_name) %>
