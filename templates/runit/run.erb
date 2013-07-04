@@ -2,4 +2,5 @@
 # Start delayed job using rake
 <% c = Capistrano::BaseHelper::get_capistrano_instance %>
 cd '<%= c.current_path %>'
+exec 2>&1
 RAILS_ENV=<%= Capistrano::BaseHelper.environment %> exec <%= c.fetch(:delayed_job_bin) %>
