@@ -1,6 +1,6 @@
 # Capistrano Recipes for Delayed Job
 
-This gem provides recipes for Delayed Job to setup runit and monit
+This gem provides recipes for [Delayed Job](https://github.com/collectiveidea/delayed_job) to setup runit and monit
 
 ## Usage
 
