@@ -11,9 +11,9 @@ Capistrano::Configuration.instance(true).load do
   _cset :delayed_job_log_path, defer {"/var/log/service/#{fetch(:user)}/#{fetch(:application)}_#{Capistrano::BaseHelper.environment}/delayed_job"}
 
   # runit paths
-  _cset :delayed_job_runit_local_config,  File.join(File.expand_path(File.join(File.dirname(__FILE__),"../templates", "runit", )), "run.erb")
-  _cset :delayed_job_runit_control_q,     File.join(File.expand_path(File.join(File.dirname(__FILE__),"../templates", "runit")), "control-q.erb")
-  _cset :delayed_job_runit_local_log_run, File.join(File.expand_path(File.join(File.dirname(__FILE__),"../templates", "runit")), "log-run.erb")
+  _cset :delayed_job_runit_local_config,  File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit", )), "run.erb")
+  _cset :delayed_job_runit_control_q,     File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit")), "control-q.erb")
+  _cset :delayed_job_runit_local_log_run, File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit")), "log-run.erb")
 
   # monit configuration
   _cset :delayed_job_monit_service_name,  defer { "#{fetch(:user)}_#{fetch(:application)}_#{Capistrano::BaseHelper.environment}_delayed_job" }
@@ -24,6 +24,6 @@ Capistrano::Configuration.instance(true).load do
   _cset :delayed_job_monit_cpu_alert_threshold,   "90% for 2 cycles"
   _cset :delayed_job_monit_cpu_restart_threshold, "95% for 5 cycles"
 
-  _cset :delayed_job_local_monit_config, File.join(File.expand_path(File.join(File.dirname(__FILE__),"../templates", "monit")), "delayed_job.conf.erb")
+  _cset :delayed_job_local_monit_config, File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "monit")), "delayed_job.conf.erb")
 
 end
