@@ -15,12 +15,13 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "capistrano-delayed_job"
-  gem.homepage = "http://github.com/leifcr/capistrano-delayed_job"
+  gem.homepage = "https://github.com/leifcr/capistrano-delayed_job"
   gem.license = "MIT"
   gem.summary = %Q{Capistrano recipes for Delayed Job using runit and monit}
   gem.description = %Q{Capistrano recipes for Delayed Job using runit and monit.}
   gem.email = "leifcr@gmail.com"
   gem.authors = ["Leif Ringstad"]
+  gem.files.exclude ".ruby-*"
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
