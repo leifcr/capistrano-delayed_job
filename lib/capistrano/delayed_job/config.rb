@@ -1,3 +1,4 @@
+require 'capistrano/base_helper/base_helper'
 Capistrano::Configuration.instance(true).load do
   _cset :delayed_job_runit_service_name, "delayed_job"
   _cset :delayed_job_workers, 1 # More than 1 is not implemented yet.

@@ -6,6 +6,6 @@ def try_require(library)
   end
 end
 
-try_require 'capistrano-delayed_job/config'
-try_require 'capistrano-delayed_job/runit'
-try_require 'capistrano-delayed_job/monit'
+try_require 'capistrano/delayed_job/config'
+try_require 'capistrano/delayed_job/runit'
+try_require 'capistrano/delayed_job/monit'
