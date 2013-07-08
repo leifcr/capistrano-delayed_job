@@ -17,10 +17,8 @@ Capistrano::Configuration.instance(true).load do
       task :setup, :roles => :app do
         # Create runit config
         Capistrano::RunitBase.create_service_dir(delayed_job_runit_service_name)
-        Capistrano::BaseHelper::generate_and_upload_config(delayed_job_runit_local_config, Capistrano::RunitBase.remote_run_config_path(delayed_job_runit_service_name))
-        # must use quit script for stop as well
-        # Capistrano::BaseHelper::generate_and_upload_config(delayed_job_runit_control_q, Capistrano::RunitBase.remote_control_path(delayed_job_runit_service_name, "q"))
-        # Capistrano::BaseHelper::generate_and_upload_config(delayed_job_runit_control_q, Capistrano::RunitBase.remote_control_path(delayed_job_runit_service_name, "s"))
+        Capistrano::BaseHelper::generate_and_upload_config(delayed_job_runit_local_run, Capistrano::RunitBase.remote_run_config_path(delayed_job_runit_service_name))
+        Capistrano::BaseHelper::generate_and_upload_config(delayed_job_runit_local_finish, Capistrano::RunitBase.remote_finish_config_path(delayed_job_runit_service_name))
 
         # Log run script
         Capistrano::BaseHelper::generate_and_upload_config(delayed_job_runit_local_log_run, Capistrano::RunitBase.remote_service_log_run_path(delayed_job_runit_service_name))

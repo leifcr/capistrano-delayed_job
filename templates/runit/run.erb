@@ -1,6 +1,14 @@
 #!/bin/bash --login
 # Start delayed job using rake
 <% c = Capistrano::BaseHelper::get_capistrano_instance %>
-cd '<%= c.current_path %>'
+# Redirect stderr so everything ends up in the log file
 exec 2>&1
+
+# Announce start
+echo "<%= "User: #{c.fetch(:user)} Application: #{c.fetch(:application)} Service: #{c.fetch(:delayed_job_runit_service_name)}" %> starting..."
+
+# Change path to current path
+cd '<%= c.current_path %>'
+
+# Start delayed job
 RAILS_ENV=<%= Capistrano::BaseHelper.environment %> exec <%= c.fetch(:delayed_job_bin) %>

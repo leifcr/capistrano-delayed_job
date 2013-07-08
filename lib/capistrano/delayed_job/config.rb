@@ -10,8 +10,14 @@ Capistrano::Configuration.instance(true).load do
   # Logging to path
   _cset :delayed_job_log_path, defer {"/var/log/service/#{fetch(:user)}/#{fetch(:application)}_#{Capistrano::BaseHelper.environment}/delayed_job"}
 
-  # runit paths
-  _cset :delayed_job_runit_local_config,  File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit", )), "run.erb")
+  # runit defaults
+  _cset :delayed_job_restart_interval, defer {fetch(:runit_restart_interval)}
+  _cset :delayed_job_restart_count, defer {fetch(:runit_restart_count)}
+  _cset :delayed_job_autorestart_clear_interval, defer {fetch(:runit_autorestart_clear_interval)}
+
+    # runit paths
+  _cset :delayed_job_runit_local_run,     File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit", )), "run.erb")
+  _cset :delayed_job_runit_local_finish,  File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit", )), "finish.erb")
   _cset :delayed_job_runit_control_q,     File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit")), "control-q.erb")
   _cset :delayed_job_runit_local_log_run, File.join(File.expand_path(File.join(File.dirname(__FILE__),"../../../templates", "runit")), "log-run.erb")
 
