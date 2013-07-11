@@ -7,7 +7,7 @@ This gem provides recipes for [Delayed Job](https://github.com/collectiveidea/de
 Add it to your Gemfile without requiring it
 
 ```ruby
-gem 'capistrano-delayed_job'
+gem 'capistrano-delayed_job', :require => false
 ```
 
 In your deploy.rb:
