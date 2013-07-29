@@ -9,7 +9,7 @@ Capistrano::Configuration.instance(true).load do
   # enable service after update in case it has not been setup or is disabled
   # Service should probably be started as well?
   after "deploy:update", "delayed_job:runit:enable"
-  after "delayed_job:runit:quit", "delayed_job:runit:stop"
+  before "delayed_job:runit:quit", "delayed_job:runit:stop"
 
   namespace :delayed_job do
     namespace :runit do
