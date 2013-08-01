@@ -1,6 +1,6 @@
 # Capistrano Recipes for Delayed Job
 
-This gem provides recipes for [Delayed Job](https://github.com/collectiveidea/delayed_job) to setup runit and monit
+This gem provides recipes for [Delayed Job](https://github.com/collectiveidea/delayed_job) to setup [runit](smarden.org/runit/) and [monit](http://mmonit.com/monit)
 
 ## Usage
 
@@ -58,7 +58,7 @@ cap delayed_job:runit:stop             # Stop Delayed Job runit-service
 To use runit to start/stop/restart services instead of monit, use the example below.
 
 ```ruby
-# stop before deployment 
+# stop before deployment
 # (must be done after monit has stopped monitoring the task. If not, the service will be restarted by monit)
 before "monit:unmonitor", "delayed_job:runit:stop"
 # start before enabling monitor
