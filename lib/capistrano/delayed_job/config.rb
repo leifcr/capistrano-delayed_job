@@ -25,8 +25,8 @@ Capistrano::Configuration.instance(true).load do
   _cset :delayed_job_monit_service_name,  defer { "#{fetch(:user)}_#{fetch(:application)}_#{Capistrano::BaseHelper.environment}_delayed_job" }
   _cset :delayed_job_monit_start_command, defer {"/bin/bash -c '[ ! -h #{Capistrano::RunitBase.service_path(fetch(:delayed_job_runit_service_name))}/run ] || /usr/bin/sv start #{Capistrano::RunitBase.service_path(fetch(:delayed_job_runit_service_name))}'"}
   _cset :delayed_job_monit_stop_command,  defer {"/usr/bin/sv -w 12 force-stop #{Capistrano::RunitBase.service_path(fetch(:delayed_job_runit_service_name))}"}
-  _cset :delayed_job_monit_memory_alert_threshold, "45.0 MB for 2 cycles"
-  _cset :delayed_job_monit_memory_restart_threshold, "50.0 MB for 3 cycles"
+  _cset :delayed_job_monit_memory_alert_threshold, "100.0 MB for 2 cycles"   # Each worker would be likely to use at least 60-70mb ram for an app with many gems
+  _cset :delayed_job_monit_memory_restart_threshold, "150.0 MB for 3 cycles" # Give the delayed_job_workers some headroom
   _cset :delayed_job_monit_cpu_alert_threshold,   "90% for 2 cycles"
   _cset :delayed_job_monit_cpu_restart_threshold, "95% for 5 cycles"
 
