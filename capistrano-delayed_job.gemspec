@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "capistrano-delayed_job"
-  s.version = "0.0.9"
+  s.version = "0.0.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Leif Ringstad"]
-  s.date = "2013-08-01"
+  s.date = "2013-08-02"
   s.description = "Capistrano recipes for Delayed Job using runit and monit."
   s.email = "leifcr@gmail.com"
   s.extra_rdoc_files = [
