@@ -1,0 +1,9 @@
+#!/bin/sh -e
+# Log output for delayed_job worker <%= fetch(:tmp_worker_number) %> running on <%= fetch(:application) %> running as <%= fetch(:user) %>
+# make sure the log directory exists
+mkdir -p "<%= fetch(:tmp_delayed_job_log_path) %>"
+# change path to the log directory
+cd "<%= fetch(:tmp_delayed_job_log_path) %>"
+# start logging
+# exec chpst -u syslog svlogd -tt "<%= fetch(:tmp_delayed_job_log_path) %>"
+exec svlogd -tt "<%= fetch(:tmp_delayed_job_log_path) %>"

@@ -2,10 +2,12 @@ def try_require(library)
   begin
     require "#{library}"
   rescue LoadError => e
-    puts "Capistrano-Delayed Job: Cannot load library: #{library} Error: #{e}"
+    puts "Capistrano-DelayedJob: Cannot load library: #{library} Error: #{e}"
   end
 end
 
-try_require 'capistrano/delayed_job/config'
-try_require 'capistrano/delayed_job/runit'
-try_require 'capistrano/delayed_job/monit'
+try_require 'capistrano/monit'
+try_require 'capistrano/runit'
+load File.expand_path('../tasks/config.rake', __FILE__)
+load File.expand_path('../tasks/monit.rake', __FILE__)
+load File.expand_path('../tasks/runit.rake', __FILE__)
