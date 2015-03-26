@@ -7,6 +7,10 @@ module Capistrano
       module Monit
         module_function
 
+        def delayed_job_pid_file(worker_number)
+          service_pid("#{fetch(:delayed_job_runit_base_service_name)}_#{worker_number}")
+        end
+
         def delayed_job_monit_service_name(worker_number)
           "#{fetch(:delayed_job_monit_base_service_name)}_#{worker_number}"
         end
@@ -22,11 +26,11 @@ module Capistrano
         end
 
         def available_configuration_with_path(worker_number)
-          File.join(fetch(:monit_available_path), "#{fetch(:delayed_job_runit_service_name)}_#{worker_number}.conf")
+          File.join(fetch(:monit_available_path), "#{fetch(:delayed_job_runit_base_service_name)}_#{worker_number}.conf")
         end
 
         def available_configuration_file(worker_number)
-          "#{fetch(:delayed_job_runit_service_name)}_#{worker_number}.conf"
+          "#{fetch(:delayed_job_runit_base_service_name)}_#{worker_number}.conf"
         end
       end
     end

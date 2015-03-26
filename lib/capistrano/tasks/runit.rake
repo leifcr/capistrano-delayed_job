@@ -96,10 +96,13 @@ namespace :delayed_job do
     # :on_error => :continue  should be added when cap3 equivalent has been figured out
     task :stop do
       on roles(:app) do
-        # will wait 60 seconds for delayed job to shut down/finish current jobs, to allow it to
+        # will wait 45 seconds for delayed job to shut down/finish current jobs, to allow it to
         # Process ongoing tasks.
         (1..fetch(:delayed_job_workers)).each do |n|
-          control_service(delayed_job_runit_service_name(n), 'force-stop', '-w 60')
+          begin
+            control_service(delayed_job_runit_service_name(n), 'force-stop', '-w 45')
+          rescue
+          end
         end
       end
     end
@@ -141,6 +144,6 @@ after 'runit:setup', 'delayed_job:runit:setup'
 # enable service after update in case it has been disabled
 # Service should probably be started as well?
 after 'deploy:updated', 'delayed_job:runit:enable'
-before 'delayed_job:runit:setup', 'delayed_job:flush_sockets'
+# before 'delayed_job:runit:setup', 'delayed_job:flush_sockets'
 before 'delayed_job:runit:setup', 'delayed_job:setup'
 before 'delayed_job:runit:quit', 'delayed_job:runit:stop'

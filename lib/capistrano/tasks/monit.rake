@@ -1,8 +1,10 @@
+require 'capistrano/dsl/base_paths'
+require 'capistrano/dsl/runit_paths'
 require 'capistrano/helpers/base'
 require 'capistrano/helpers/monit'
 require 'capistrano/helpers/delayed_job/monit'
-require 'capistrano/dsl/base_paths'
 include Capistrano::DSL::BasePaths
+include Capistrano::DSL::RunitPaths
 include Capistrano::Helpers::Base
 include Capistrano::Helpers::Monit
 include Capistrano::Helpers::DelayedJob::Monit
@@ -16,6 +18,8 @@ namespace :delayed_job do
           info "MONIT: Uploading configuration for Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
           # Upload configuration
           set :tmp_delayed_job_monit_service_name, delayed_job_monit_service_name(n)
+          set :tmp_worker_number, n
+          set :tmp_delayed_job_pid_file, delayed_job_pid_file(n)
           upload! template_to_s_io(fetch(:delayed_job_monit_config_template)), available_configuration_with_path(n)
         end
       end

@@ -11,10 +11,6 @@ module Capistrano
           "#{fetch(:delayed_job_runit_base_service_name)}_#{worker_number}"
         end
 
-        def delayed_job_pid_file(worker_number)
-          service_pid(delayed_job_runit_service_name(worker_number))
-        end
-
         def delayed_job_log_path(worker_number)
           runit_var_log_service_single_service_path(delayed_job_runit_service_name(worker_number))
         end
