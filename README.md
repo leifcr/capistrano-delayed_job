@@ -2,18 +2,33 @@
 
 This gem provides recipes for [Delayed Job](https://github.com/collectiveidea/delayed_job) to setup [runit](smarden.org/runit/) and [monit](http://mmonit.com/monit)
 
+## Versioning
+
+Use 3.x for capistrano 3
+
+For capistrano2, see the capistrano2 branch (will not be updated)
+
 ## Usage
 
 Add it to your Gemfile without requiring it
 
 ```ruby
-gem 'capistrano-delayed_job', :require => false
+gem 'capistrano-delayed_job', require: false
 ```
 
-In your deploy.rb:
+Now run ```bundle install```
+
+Add this to your Capfile:
 
 ```ruby
 require 'capistrano/delayed_job'
+```
+
+Create a new file in in /etc/sudoers.d/ and add the output of the following commands:
+
+```
+cap production runit:sudoers
+cap production monit:sudoers
 ```
 
 ### Monit
