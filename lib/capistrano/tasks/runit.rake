@@ -4,14 +4,13 @@ require 'capistrano/helpers/base'
 require 'capistrano/helpers/runit'
 require 'capistrano/helpers/delayed_job/runit'
 
-include Capistrano::DSL::BasePaths
-include Capistrano::DSL::RunitPaths
-include Capistrano::Helpers::Base
-include Capistrano::Helpers::Runit
-include Capistrano::Helpers::DelayedJob::Runit
-
 # require 'capistrano/runit'
 namespace :delayed_job do
+  include Capistrano::DSL::BasePaths
+  include Capistrano::DSL::RunitPaths
+  include Capistrano::Helpers::Base
+  include Capistrano::Helpers::Runit
+
   desc 'Setup Delayed Job configuration'
   task :setup do
     on roles(:app) do
@@ -26,31 +25,31 @@ namespace :delayed_job do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
           # Create runit config
-          if test("[ ! -d '#{runit_service_path(delayed_job_runit_service_name(n))}' ]")
-            execute :mkdir, "-p '#{runit_service_path(delayed_job_runit_service_name(n))}'"
+          if test("[ ! -d '#{runit_service_path(Capistrano::Helpers::DelayedJob::Runit.service_name(n))}' ]")
+            execute :mkdir, "-p '#{runit_service_path(Capistrano::Helpers::DelayedJob::Runit.service_name(n))}'"
           end
 
-          set :tmp_delayed_job_runit_service_name, delayed_job_runit_service_name(n)
+          set :tmp_delayed_job_runit_service_name, Capistrano::Helpers::DelayedJob::Runit.service_name(n)
           set :tmp_worker_number, n
 
-          upload! template_to_s_io(fetch(:delayed_job_runit_run_template)), runit_service_run_config_file(delayed_job_runit_service_name(n)) # rubocop:disable Metrics/LineLength
-          upload! template_to_s_io(fetch(:delayed_job_runit_finish_template)), runit_service_finish_config_file(delayed_job_runit_service_name(n)) # rubocop:disable Metrics/LineLength
+          upload! template_to_s_io(fetch(:delayed_job_runit_run_template)), runit_service_run_config_file(Capistrano::Helpers::DelayedJob::Runit.service_name(n)) # rubocop:disable Metrics/LineLength
+          upload! template_to_s_io(fetch(:delayed_job_runit_finish_template)), runit_service_finish_config_file(Capistrano::Helpers::DelayedJob::Runit.service_name(n)) # rubocop:disable Metrics/LineLength
 
           # Log scripts for runit service
-          if test("[ ! -d '#{runit_service_log_path(delayed_job_runit_service_name(n))}' ]")
-            execute :mkdir, "-p '#{runit_service_log_path(delayed_job_runit_service_name(n))}'"
+          if test("[ ! -d '#{runit_service_log_path(Capistrano::Helpers::DelayedJob::Runit.service_name(n))}' ]")
+            execute :mkdir, "-p '#{runit_service_log_path(Capistrano::Helpers::DelayedJob::Runit.service_name(n))}'"
           end
 
-          set :tmp_delayed_job_log_path, delayed_job_log_path(n)
+          set :tmp_delayed_job_log_path, Capistrano::Helpers::DelayedJob::Runit.log_path(n)
 
-          upload! template_to_s_io(fetch(:delayed_job_runit_log_run_template)), runit_service_log_run_file(delayed_job_runit_service_name(n)) # rubocop:disable Metrics/LineLength
+          upload! template_to_s_io(fetch(:delayed_job_runit_log_run_template)), runit_service_log_run_file(Capistrano::Helpers::DelayedJob::Runit.service_name(n)) # rubocop:disable Metrics/LineLength
 
           # Make scripts executable
-          runit_set_executable_files(delayed_job_runit_service_name(n))
+          runit_set_executable_files(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
 
           # Create log paths for the service
-          if test("[ ! -d '#{runit_var_log_service_single_service_path(delayed_job_runit_service_name(n))}' ]")
-            execute :mkdir, "-p '#{runit_var_log_service_single_service_path(delayed_job_runit_service_name(n))}'"
+          if test("[ ! -d '#{runit_var_log_service_single_service_path(Capistrano::Helpers::DelayedJob::Runit.service_name(n))}' ]")
+            execute :mkdir, "-p '#{runit_var_log_service_single_service_path(Capistrano::Helpers::DelayedJob::Runit.service_name(n))}'"
           end
         end
       end
@@ -60,7 +59,7 @@ namespace :delayed_job do
     task :enable do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
-          enable_service(delayed_job_runit_service_name(n))
+          enable_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
         end
       end
     end
@@ -69,7 +68,7 @@ namespace :delayed_job do
     task :disable do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
-          disable_service(delayed_job_runit_service_name(n))
+          disable_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
         end
       end
     end
@@ -78,7 +77,7 @@ namespace :delayed_job do
     task :start do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
-          control_service(delayed_job_runit_service_name(n), 'start')
+          control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'start')
         end
       end
     end
@@ -87,7 +86,7 @@ namespace :delayed_job do
     task :once do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
-          control_service(delayed_job_runit_service_name(n), 'once')
+          control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'once')
         end
       end
     end
@@ -100,7 +99,7 @@ namespace :delayed_job do
         # Process ongoing tasks.
         (1..fetch(:delayed_job_workers)).each do |n|
           begin
-            control_service(delayed_job_runit_service_name(n), 'force-stop', '-w 45')
+            control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'force-stop', '-w 45')
           rescue
           end
         end
@@ -112,7 +111,7 @@ namespace :delayed_job do
     task :quit do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
-          control_service(delayed_job_runit_service_name(n), 'quit')
+          control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'quit')
         end
       end
     end
@@ -121,7 +120,7 @@ namespace :delayed_job do
     task :restart do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
-          control_service(delayed_job_runit_service_name(n), 'restart')
+          control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'restart')
         end
       end
     end
@@ -131,8 +130,8 @@ namespace :delayed_job do
     task :purge do
       on roles(:app) do
         (1..fetch(:delayed_job_workers)).each do |n|
-          disable_service(delayed_job_runit_service_name(n))
-          purge_service(delayed_job_runit_service_name(n))
+          disable_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
+          purge_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
         end
       end
     end

@@ -6,8 +6,8 @@
 #
 check process <%= fetch(:tmp_delayed_job_monit_service_name) %>
     with pidfile <%= fetch(:tmp_delayed_job_pid_file) %>
-    start program = "<%= delayed_job_monit_start_command(fetch(:tmp_worker_number)) %>"
-    stop program = "<%= delayed_job_monit_stop_command(fetch(:tmp_worker_number)) %>"
+    start program = "<%= fetch(:tmp_delayed_job_start_command) %>"
+    stop program = "<%= fetch(:tmp_delayed_job_stop_command) %>"
     <%= "if mem is greater than #{fetch(:delayed_job_monit_memory_alert_threshold)} then alert"     unless fetch(:delayed_job_monit_memory_alert_threshold).nil? %>
     <%= "if mem is greater than #{fetch(:delayed_job_monit_memory_restart_threshold)} then restart" unless fetch(:delayed_job_monit_memory_restart_threshold).nil? %>
     <%= "if cpu is greater than #{fetch(:delayed_job_monit_cpu_alert_threshold)} then alert"        unless fetch(:delayed_job_monit_cpu_alert_threshold).nil? %>
