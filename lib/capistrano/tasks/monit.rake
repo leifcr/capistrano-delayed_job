@@ -17,7 +17,7 @@ namespace :delayed_job do
         (1..fetch(:delayed_job_workers)).each do |n|
           info "MONIT: Uploading configuration for Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
           # Upload configuration
-          set :tmp_delayed_job_monit_service_name, delayed_job_monit_service_name(n)
+          set :tmp_delayed_job_monit_service_name, delayed_job_monit_app_env_service_name(n)
           set :tmp_worker_number, n
           set :tmp_delayed_job_pid_file, delayed_job_pid_file(n)
           upload! template_to_s_io(fetch(:delayed_job_monit_config_template)), available_configuration_with_path(n)

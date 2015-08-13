@@ -11,6 +11,10 @@ module Capistrano
           service_pid("#{fetch(:delayed_job_runit_base_service_name)}_#{worker_number}")
         end
 
+        def delayed_job_monit_app_env_service_name(worker_number)
+          "#{user_app_env_underscore}_#{fetch(:delayed_job_monit_base_service_name)}_#{worker_number}"
+        end
+
         def delayed_job_monit_service_name(worker_number)
           "#{fetch(:delayed_job_monit_base_service_name)}_#{worker_number}"
         end
