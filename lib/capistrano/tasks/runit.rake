@@ -15,7 +15,6 @@ namespace :delayed_job do
   task :setup do
     on roles(:app) do
       execute :mkdir, "-p #{fetch(:sockets_path)}" if test("[ ! -d '#{fetch(:sockets_path)}' ]")
-      upload! template_to_s_io(fetch(:puma_config_template)), fetch(:puma_config_file)
     end
   end
 

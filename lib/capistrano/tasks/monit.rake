@@ -14,7 +14,7 @@ namespace :delayed_job do
         (1..fetch(:delayed_job_workers)).each do |n|
           info "MONIT: Uploading configuration for Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
           # Upload configuration
-          set :tmp_delayed_job_monit_service_name, Capistrano::Helpers::DelayedJob::Monit.service_name(n)
+          set :tmp_delayed_job_monit_service_name, Capistrano::Helpers::DelayedJob::Monit.app_env_service_name(n)
           set :tmp_worker_number, n
           set :tmp_delayed_job_pid_file, Capistrano::Helpers::DelayedJob::Monit.pid_file(n)
           set :tmp_delayed_job_start_command, Capistrano::Helpers::DelayedJob::Monit.start_command(n)
