@@ -24,13 +24,6 @@ Add this to your Capfile:
 require 'capistrano/delayed_job'
 ```
 
-Create a new file in in /etc/sudoers.d/ and add the output of the following commands:
-
-```
-cap production runit:sudoers
-cap production monit:sudoers
-```
-
 ### Monit
 
 ```
