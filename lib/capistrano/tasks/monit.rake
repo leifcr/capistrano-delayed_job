@@ -74,6 +74,8 @@ after 'delayed_job:monit:enable', 'monit:reload'
 before 'delayed_job:monit:disable', 'delayed_job:monit:unmonitor'
 after 'delayed_job:monit:disable', 'monit:reload'
 
+before 'monit:enable', 'delayed_job:monit:enable'
+
 # start service after update in case it has not been stopped
 # This shouldn't be necessary, as monit should pick up a non-running service.
 # Starting it here might trigger double starting if monit is triggered simultaniously.

@@ -145,3 +145,5 @@ after 'deploy:updated', 'delayed_job:runit:enable'
 # before 'delayed_job:runit:setup', 'delayed_job:flush_sockets'
 before 'delayed_job:runit:setup', 'delayed_job:setup'
 before 'delayed_job:runit:quit', 'delayed_job:runit:stop'
+
+before 'runit:enable', 'delayed_job:runit:enable'
