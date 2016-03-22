@@ -50,7 +50,7 @@ namespace :delayed_job do
         on roles(:app) do |host|
           (1..fetch(:delayed_job_workers)).each do |n|
             info "MONIT: #{cmd} Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
-            command_monit(cmd, Capistrano::Helpers::DelayedJob::Monit.available_configuration_file(n))
+            command_monit_service(cmd, Capistrano::Helpers::DelayedJob::Monit.available_configuration_file(n))
           end
         end
       end
