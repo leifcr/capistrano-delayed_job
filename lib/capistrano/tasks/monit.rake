@@ -10,7 +10,7 @@ namespace :delayed_job do
   namespace :monit do
     desc 'MONIT: Setup Delayed Job service'
     task :setup do
-      on roles(:app) do |host|
+      on roles(:worker) do |host|
         (1..fetch(:delayed_job_workers)).each do |n|
           info "MONIT: Uploading configuration for Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
           # Upload configuration
@@ -26,7 +26,7 @@ namespace :delayed_job do
 
     desc 'MONIT: Enable services for Delayed Job'
     task :enable do
-      on roles(:app) do |host|
+      on roles(:worker) do |host|
         (1..fetch(:delayed_job_workers)).each do |n|
           info "MONIT: Enabling service for Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
           enable_monitor(Capistrano::Helpers::DelayedJob::Monit.available_configuration_file(n))
@@ -36,7 +36,7 @@ namespace :delayed_job do
 
     desc 'MONIT: Disable and Stop services for Delayed Job'
     task :disable do
-      on roles(:app) do |host|
+      on roles(:worker) do |host|
         (1..fetch(:delayed_job_workers)).each do |n|
           info "MONIT: Disabling service for Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
           disable_monitor(Capistrano::Helpers::DelayedJob::Monit.available_configuration_file(n))
@@ -47,7 +47,7 @@ namespace :delayed_job do
     %w(start stop restart monitor unmonitor).each do |cmd|
       desc "MONIT: #{cmd.capitalize} Delayed Job"
       task cmd.to_sym do
-        on roles(:app) do |host|
+        on roles(:worker) do |host|
           (1..fetch(:delayed_job_workers)).each do |n|
             info "MONIT: #{cmd} Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
             command_monit_service(cmd, Capistrano::Helpers::DelayedJob::Monit.app_env_service_name(n))
@@ -58,7 +58,7 @@ namespace :delayed_job do
 
     desc 'MONIT: Purge Delayed Job configuration'
     task :purge do
-      on roles(:app) do |host|
+      on roles(:worker) do |host|
         (1..fetch(:delayed_job_workers)).each do |n|
           info "MONIT: Purging config for Delayed Job worker #{n} for #{fetch(:application)} on #{host}"
         end

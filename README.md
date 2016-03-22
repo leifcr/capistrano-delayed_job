@@ -23,6 +23,9 @@ Add this to your Capfile:
 ```ruby
 require 'capistrano/delayed_job'
 ```
+### Roles:
+
+capistrano-delayed_job targets ```:worker``` roles by default.
 
 ### Monit
 

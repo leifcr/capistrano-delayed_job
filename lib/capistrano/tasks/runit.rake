@@ -13,7 +13,7 @@ namespace :delayed_job do
 
   desc 'Setup Delayed Job configuration'
   task :setup do
-    on roles(:app) do
+    on roles(:worker) do
       execute :mkdir, "-p #{fetch(:sockets_path)}" if test("[ ! -d '#{fetch(:sockets_path)}' ]")
     end
   end
@@ -21,7 +21,7 @@ namespace :delayed_job do
   namespace :runit do
     desc 'Setup Delayed Job runit-service'
     task :setup do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           # Create runit config
           if test("[ ! -d '#{runit_service_path(Capistrano::Helpers::DelayedJob::Runit.service_name(n))}' ]")
@@ -56,7 +56,7 @@ namespace :delayed_job do
 
     desc 'Enable Delayed Job runit-services'
     task :enable do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           enable_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
         end
@@ -65,7 +65,7 @@ namespace :delayed_job do
 
     desc 'Disable Delayed Job runit-services'
     task :disable do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           disable_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
         end
@@ -74,7 +74,7 @@ namespace :delayed_job do
 
     desc 'Start Delayed Job runit-services'
     task :start do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'start')
         end
@@ -83,7 +83,7 @@ namespace :delayed_job do
 
     desc 'Start Delayed Job runit-services only ONCE (no supervision...)'
     task :once do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'once')
         end
@@ -93,7 +93,7 @@ namespace :delayed_job do
     desc 'Stop Delayed Job runit-services'
     # :on_error => :continue  should be added when cap3 equivalent has been figured out
     task :stop do
-      on roles(:app) do
+      on roles(:worker) do
         # will wait 45 seconds for delayed job to shut down/finish current jobs, to allow it to
         # Process ongoing tasks.
         (1..fetch(:delayed_job_workers)).each do |n|
@@ -108,7 +108,7 @@ namespace :delayed_job do
     desc 'Quit the Delayed Job runit-services'
     # :on_error => :continue  should be added when cap3 equivalent has been figured out
     task :quit do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'quit')
         end
@@ -117,7 +117,7 @@ namespace :delayed_job do
 
     desc 'Restart Delayed Job runit-services'
     task :restart do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           control_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n), 'restart')
         end
@@ -127,7 +127,7 @@ namespace :delayed_job do
     desc 'Purge Delayed Job runit configuration'
     # :on_error => :continue  should be added when cap3 equivalent has been figured out
     task :purge do
-      on roles(:app) do
+      on roles(:worker) do
         (1..fetch(:delayed_job_workers)).each do |n|
           disable_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
           purge_service(Capistrano::Helpers::DelayedJob::Runit.service_name(n))
