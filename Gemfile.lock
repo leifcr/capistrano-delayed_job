@@ -85,7 +85,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (>= 4.0)
   bundler (>= 1.7)
-  capistrano (>= 3.4)
+  capistrano (~> 3.4)
   capistrano-monit_runit (~> 3.1.0)
   juwelier
 
