@@ -2,6 +2,10 @@
 
 This gem provides recipes for [Delayed Job](https://github.com/collectiveidea/delayed_job) to setup [runit](smarden.org/runit/) and [monit](http://mmonit.com/monit)
 
+## Not maintained!
+
+This is no longer maintained, as deployment methods have changed the last years. (Kubernetes, docker, etc)
+
 ## Versioning
 
 Use 3.x for capistrano 3
